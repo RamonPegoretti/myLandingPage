@@ -26,8 +26,6 @@
     btn.setAttribute('aria-label', t('lang.aria'));
     btn.children[0].classList.toggle('lang__on', lang === 'it');
     btn.children[1].classList.toggle('lang__on', lang === 'en');
-    $('#url').textContent = t('site.url');
-    rebuildMini();
   }
   $('#lang').addEventListener('click', () => {
     lang = lang === 'it' ? 'en' : 'it';
@@ -97,94 +95,22 @@
     requestAnimationFrame(step);
   }
 
-  /* ---------------- builder (level 02) ---------------- */
-  const screen = $('#screen'), body = $('#canvasSite'), empty = $('#empty'), done = $('#done');
-  const builtEl = $('#built');
-  const placed = new Set();
-  const order = ['nav', 'hero', 'cards', 'hours', 'map', 'cta'];
+  /* ---------------- configurator (level 02) ---------------- */
+  const mini = $('#mini'), cfg = $('#config'), builtEl = $('#built');
+  function syncMini() {
+    mini.dataset.style = cfg.querySelector('input[name="style"]:checked').value;
+    const on = new Set($$('input[name="sec"]:checked', cfg).map(i => i.value));
+    $$('[data-sec]', mini).forEach(el => el.classList.toggle('off', !on.has(el.dataset.sec)));
+    builtEl.textContent = on.size;
+  }
+  cfg.addEventListener('change', syncMini);
+  syncMini();
 
-  function render(kind) {
-    const d = document.createElement('div');
-    d.className = 's s-' + kind;
-    d.dataset.kind = kind;
-    switch (kind) {
-      case 'nav': d.innerHTML = `<span>${t('mini.brand')}</span><ul>${t('mini.nav').map(x => `<li>${x}</li>`).join('')}</ul>`; break;
-      case 'hero': d.innerHTML = `<h4>${t('mini.hero')}</h4><p>${t('mini.heroSub')}</p>`; break;
-      case 'cards': d.innerHTML = t('mini.cards').map(([a, b]) => `<div><b>${a}</b>${b}</div>`).join(''); break;
-      case 'hours': d.innerHTML = `<span class="open">${t('mini.open')}</span><span>${t('mini.hours')}</span>`; break;
-      case 'map': d.setAttribute('aria-hidden', 'true'); break;
-      case 'cta': d.textContent = t('mini.cta'); break;
-    }
-    return d;
-  }
-  function addBlock(kind, animate = true) {
-    if (placed.has(kind)) return;
-    placed.add(kind);
-    empty.hidden = true;
-    const el = render(kind);
-    if (!animate) el.style.animation = 'none';
-    body.appendChild(el);
-    $(`[data-block="${kind}"]`).classList.add('used');
-    builtEl.textContent = placed.size;
-    if (placed.size === order.length) {
-      done.hidden = false;
-      if (animate) toast(t('toast.built'));
-    }
-  }
-  function rebuildMini() {
-    const kinds = [...placed];
-    $$('.s', body).forEach(n => n.remove());
-    placed.clear();
-    kinds.forEach(k => addBlock(k, false));
-  }
-  $('#reset').addEventListener('click', () => {
-    $$('.s', body).forEach(n => n.remove());
-    placed.clear();
-    $$('.block').forEach(b => b.classList.remove('used'));
-    builtEl.textContent = 0; empty.hidden = false; done.hidden = true;
-  });
-
-  // tap = add; drag = drop on screen
-  $$('.block').forEach(btn => {
-    let sx, sy, ghost = null, dragging = false;
-    btn.addEventListener('pointerdown', e => {
-      if (e.button !== 0) return;
-      sx = e.clientX; sy = e.clientY; dragging = false;
-      btn.setPointerCapture(e.pointerId);
-    });
-    btn.addEventListener('pointermove', e => {
-      if (sx === undefined) return;
-      if (!dragging && Math.hypot(e.clientX - sx, e.clientY - sy) > 8) {
-        dragging = true;
-        ghost = btn.cloneNode(true);
-        ghost.classList.add('ghost');
-        ghost.style.width = btn.offsetWidth + 'px';
-        document.body.appendChild(ghost);
-        btn.classList.add('dragging');
-      }
-      if (dragging) {
-        ghost.style.left = e.clientX + 'px'; ghost.style.top = e.clientY + 'px';
-        const r = screen.getBoundingClientRect();
-        screen.classList.toggle('over', e.clientX > r.left && e.clientX < r.right && e.clientY > r.top && e.clientY < r.bottom);
-      }
-    });
-    const end = e => {
-      if (sx === undefined) return;
-      if (dragging) {
-        const over = screen.classList.contains('over');
-        ghost.remove(); ghost = null;
-        btn.classList.remove('dragging'); screen.classList.remove('over');
-        if (over) addBlock(btn.dataset.block);
-      } else if (e.type === 'pointerup') {
-        addBlock(btn.dataset.block);
-      }
-      sx = undefined; dragging = false;
-    };
-    btn.addEventListener('pointerup', end);
-    btn.addEventListener('pointercancel', end);
-    btn.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); addBlock(btn.dataset.block); } });
-    btn.addEventListener('click', e => e.preventDefault());
-  });
+  // load the template fonts only when level 02 gets close
+  const tplFonts = $('#tplFonts');
+  new IntersectionObserver((es, io) => {
+    if (es[0].isIntersecting) { tplFonts.rel = 'stylesheet'; io.disconnect(); }
+  }, { rootMargin: '100% 0px' }).observe($('#cosa'));
 
   // real load time of this page (honest stat)
   addEventListener('load', () => setTimeout(() => {

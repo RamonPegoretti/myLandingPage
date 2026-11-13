@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<link rel="preload" as="style" id="tplFonts" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Instrument+Serif:ital@0;1&family=Young+Serif&family=Bricolage+Grotesque:wght@400;700&family=Hanken+Grotesk:wght@400;600&family=Instrument+Sans:wght@400;600&family=Caveat:wght@500&display=swap">
 <script>document.documentElement.classList.add('js')</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","name":"Ramon Pegoretti · Web","description":"Siti web per attività locali in Ticino","areaServed":"Ticino","email":"ramopego@gmail.com","telephone":"+41784228381","priceRange":"da CHF 1000"}
@@ -90,8 +91,6 @@
             <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="1" fill="currentColor" opacity=".12"/></pattern>
           </defs>
           <rect width="200" height="240" fill="url(#scan)"/>
-          <line x1="20" y1="200" x2="180" y2="200" stroke="currentColor" stroke-width="1" opacity=".5"/>
-          <line x1="100" y1="190" x2="100" y2="210" stroke="currentColor" stroke-width="1" opacity=".5"/>
           <text x="100" y="128" text-anchor="middle" font-family="Unbounded" font-weight="900" font-size="72" fill="currentColor">RP</text>
         </svg>
         <span class="mono cap" data-i18n="l1.photo">FOTO IN ARRIVO · 4:5</span>
@@ -107,7 +106,6 @@
         <div><dt data-i18n="l1.class">Classe</dt><dd data-i18n="l1.classv">Sviluppatore web</dd></div>
         <div><dt data-i18n="l1.school">Formazione</dt><dd><span data-gap="cv" data-i18n="l1.schoolv">AFC Informatico, sviluppo applicazioni · SAM Trevano</span></dd></div>
         <div><dt data-i18n="l1.base">Base</dt><dd>Malcantone, Ticino</dd></div>
-        <div><dt data-i18n="l1.weapon">Arma</dt><dd data-i18n="l1.weaponv">Spada (scherma)</dd></div>
         <div><dt data-i18n="l1.lang">Lingue</dt><dd data-i18n="l1.langv">Italiano, inglese</dd></div>
       </dl>
 
@@ -127,31 +125,63 @@
 <!-- ============ LEVEL 02 · COSA COSTRUISCO (builder) ============ -->
 <section class="level level--build" id="cosa" data-level="2">
   <div class="level__tag mono"><span data-i18n="lv">LIVELLO</span> 02<span class="dim">/05</span></div>
-  <h2 class="level__title" data-i18n="l2.title">Costruisci un sito. Adesso.</h2>
-  <p class="level__lead" data-i18n="l2.lead">Tocca i blocchi (o trascinali nello schermo). È così che lavoro: pezzo per pezzo, finché il tuo sito è pronto.</p>
+  <h2 class="level__title" data-i18n="l2.title">Componi il tuo sito.</h2>
+  <p class="level__lead" data-i18n="l2.lead">Scegli uno stile e le sezioni che ti servono. L'anteprima è fatta con i miei veri modelli.</p>
 
   <div class="builder">
-    <div class="tray" id="tray" role="list">
-      <button class="block" data-block="nav" role="listitem"><b>01</b><span data-i18n="b.nav">Menu</span></button>
-      <button class="block" data-block="hero" role="listitem"><b>02</b><span data-i18n="b.hero">Copertina</span></button>
-      <button class="block" data-block="cards" role="listitem"><b>03</b><span data-i18n="b.cards">Servizi</span></button>
-      <button class="block" data-block="hours" role="listitem"><b>04</b><span data-i18n="b.hours">Orari</span></button>
-      <button class="block" data-block="map" role="listitem"><b>05</b><span data-i18n="b.map">Mappa</span></button>
-      <button class="block" data-block="cta" role="listitem"><b>06</b><span data-i18n="b.cta">Prenota</span></button>
-    </div>
+    <form class="config" id="config" onsubmit="return false">
+      <fieldset>
+        <legend class="mono dim" data-i18n="l2.style">01 · Stile</legend>
+        <div class="styles">
+          <label><input type="radio" name="style" value="editorial"><span>Editorial</span></label>
+          <label><input type="radio" name="style" value="cinematic" checked><span>Cinematic</span></label>
+          <label><input type="radio" name="style" value="crafted"><span>Crafted</span></label>
+          <label><input type="radio" name="style" value="poster"><span>Poster</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend class="mono dim" data-i18n="l2.sections">02 · Sezioni</legend>
+        <div class="checks">
+          <label><input type="checkbox" name="sec" value="hours" checked><span data-i18n="b.hours">Orari · aperto ora</span></label>
+          <label><input type="checkbox" name="sec" value="menu" checked><span data-i18n="b.menu">Menu con prezzi</span></label>
+          <label><input type="checkbox" name="sec" value="gallery"><span data-i18n="b.gallery">Galleria foto</span></label>
+          <label><input type="checkbox" name="sec" value="map"><span data-i18n="b.map">Mappa e indirizzo</span></label>
+          <label><input type="checkbox" name="sec" value="book"><span data-i18n="b.book">Prenotazione</span></label>
+          <label><input type="checkbox" name="sec" value="lang"><span data-i18n="b.lang">Seconda lingua</span></label>
+        </div>
+      </fieldset>
+    </form>
 
     <div class="screen" id="screen">
-      <div class="screen__bar"><i></i><i></i><i></i><span class="mono" id="url">tuaattivita.ch</span></div>
-      <div class="screen__body" id="canvasSite">
-        <p class="screen__empty mono" id="empty" data-i18n="l2.empty">// schermo vuoto. aggiungi un blocco.</p>
-      </div>
-      <div class="screen__done" id="done" hidden>
-        <p class="mono" data-i18n="l2.doneMsg">SITO COMPLETO · ONLINE</p>
-        <button class="mono reset" id="reset" type="button" data-i18n="l2.again">↺ ricomincia</button>
+      <div class="screen__bar"><i></i><i></i><i></i><span class="mono" id="url">osteriadellago.ch</span></div>
+      <div class="mini" id="mini" data-style="cinematic" aria-label="Anteprima del sito">
+        <nav class="m-nav">
+          <span class="m-brand">Osteria del Lago</span>
+          <span class="m-links"><span data-i18n="m.menu">Menu</span><span data-i18n="m.hours">Orari</span><span data-i18n="m.contact">Contatti</span></span>
+          <span class="m-lang" data-sec="lang">IT · EN</span>
+          <span class="m-btn" data-sec="book" data-i18n="m.book">Prenota</span>
+        </nav>
+        <header class="m-hero">
+          <p class="m-kick" data-i18n="m.kick">Ristorante · Caslano</p>
+          <h4 class="m-title">Osteria<br>del Lago</h4>
+          <p class="m-sub" data-i18n="m.sub">Pesce di lago e pasta fatta in casa, sul lungolago.</p>
+          <span class="m-open" data-sec="hours"><i></i><span data-i18n="m.open">Aperto ora · chiude alle 22:00</span></span>
+        </header>
+        <section class="m-menu" data-sec="menu">
+          <p class="m-h" data-i18n="m.carta">La carta</p>
+          <ul>
+            <li><span>Risotto al pesce persico</span><b>32.00</b></li>
+            <li><span>Tagliolini al limone</span><b>24.50</b></li>
+            <li><span>Torta di pane</span><b>9.00</b></li>
+          </ul>
+        </section>
+        <section class="m-gallery" data-sec="gallery"><i></i><i></i><i></i></section>
+        <section class="m-map" data-sec="map"><span>Via Lungolago 4 · 6987 Caslano</span></section>
+        <section class="m-book" data-sec="book"><span data-i18n="m.bookFull">Prenota un tavolo</span><b>→</b></section>
       </div>
     </div>
   </div>
-  <p class="build__meter mono"><span id="built">0</span>/6 <span data-i18n="l2.blocks">blocchi</span> · <span data-i18n="l2.speed">questa pagina si è caricata in</span> <span id="ms">–</span> ms</p>
+  <p class="build__meter mono"><span id="built">2</span>/6 <span data-i18n="l2.blocks">sezioni</span> · <span data-i18n="l2.speed">questa pagina si è caricata in</span> <span id="ms">–</span> ms</p>
 </section>
 
 <!-- ============ LEVEL 03 · PREZZI ============ -->
@@ -198,7 +228,7 @@
 
 <!-- ============ LEVEL 05 · CONTATTO ============ -->
 <section class="level level--final" id="contatto" data-level="5">
-  <div class="level__tag mono"><span data-i18n="lv">LIVELLO</span> 05<span class="dim">/05</span> · <span data-i18n="l5.tag">ULTIMA STOCCATA</span></div>
+  <div class="level__tag mono"><span data-i18n="lv">LIVELLO</span> 05<span class="dim">/05</span> · <span data-i18n="l5.tag">ULTIMO LIVELLO</span></div>
   <h2 class="final__title" data-i18n="l5.title">Tocca a te.</h2>
 
   <div class="final">
@@ -212,7 +242,7 @@
       <li><a href="tel:+41784228381"><span class="mono dim" data-i18n="l5.tel">TELEFONO</span>+41 78 422 83 81</a></li>
       <li><a href="https://instagram.com/il_.pego" target="_blank" rel="noopener"><span class="mono dim">INSTAGRAM</span>@il_.pego</a></li>
     </ul>
-    <p class="final__micro mono" data-i18n="l5.micro">Rispondo entro 24 ore. Anche la sera, dopo l'allenamento.</p>
+    <p class="final__micro mono" data-gap="reply" data-i18n="l5.micro">Rispondo entro 24 ore, anche la sera.</p>
   </div>
 
   <footer class="foot mono">

@@ -11,4 +11,4 @@ Open the page with `?gaps` at the end of the URL (e.g. `index.html?gaps`) to out
 | Level 04 · step 2 | How fast you really deliver a demo | "In pochi giorni." | It's a promise |
 | Level 05 · micro-copy | Whether you really reply within 24 h | "Rispondo entro 24 ore" | It's a promise |
 | Footer | Impressum / privacy page (needed once you sell in Switzerland) | none | Legal |
-| Level 02 · mini site | Fictional "Bottega Rossi" demo content | invented on purpose | Fine as is: it's clearly a toy |
+| Level 02 · mini site | Fictional "Osteria del Lago" content | invented on purpose | Fine as is: it's clearly a toy |
