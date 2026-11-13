@@ -105,21 +105,20 @@
 
     <div class="player__stats">
       <dl class="sheet">
-        <div><dt data-i18n="l1.class">Classe</dt><dd data-i18n="l1.classv">Sviluppatore web</dd></div>
-        <div><dt data-i18n="l1.school">Formazione</dt><dd><span data-gap="cv" data-i18n="l1.schoolv">AFC Informatico, sviluppo applicazioni · SAM Trevano</span></dd></div>
-        <div><dt data-i18n="l1.base">Base</dt><dd>Malcantone, Ticino</dd></div>
-        <div><dt data-i18n="l1.lang">Lingue</dt><dd data-i18n="l1.langv">Italiano, inglese</dd></div>
+        <div><dt data-i18n="l1.class">Classe</dt><dd data-i18n="l1.classv">Sviluppatore software</dd></div>
+        <div><dt data-i18n="l1.school">Formazione</dt><dd><span data-i18n="l1.schoolv">AFC Informatico, sviluppo applicazioni · SAM Trevano, dal 2023</span><small class="sheet__note mono" data-i18n="l1.rank">Top 10 all'esame d'ammissione</small></dd></div>
+        <div><dt data-i18n="l1.base">Base</dt><dd>Fescoggia, Malcantone</dd></div>
+        <div><dt data-i18n="l1.lang">Lingue</dt><dd data-i18n="l1.langv">Italiano madrelingua · Inglese C1 · Francese B1 · Tedesco A2</dd></div>
       </dl>
 
-      <ul class="bars" aria-label="Competenze" data-gap="cv" data-wire="skills.map(s =&gt; &lt;Bar/&gt;)" style="--d:0">
-        <li style="--v:.92"><span>HTML / CSS</span><i></i></li>
-        <li style="--v:.84"><span>JavaScript</span><i></i></li>
-        <li style="--v:.78"><span>UI design</span><i></i></li>
-        <li style="--v:.66"><span>Java</span><i></i></li>
-        <li style="--v:.6"><span>SQL</span><i></i></li>
-      </ul>
+      <div class="inv" data-wire="inventory.map(Slot)" style="--d:0">
+        <p class="mono dim" data-i18n="l1.inv">INVENTARIO</p>
+        <ul aria-label="Competenze tecniche">
+          <li>HTML</li><li>CSS</li><li>JavaScript</li><li>Python</li><li>Java</li><li>C#</li><li>AWS Cloud</li>
+        </ul>
+      </div>
 
-      <p class="bio" data-i18n="l1.bio">Ho 18 anni e studio informatica a Trevano. Di giorno scrivo codice, la sera tiro di spada. Dalla scherma ho imparato una cosa che vale anche per il web: vince chi è preciso e veloce.</p>
+      <p class="bio" data-i18n="l1.bio">Ho 18 anni, vivo a Fescoggia e studio informatica alla SAM Trevano. Prima del codice ho lavorato in un rifugio di montagna e nei boschi: so cosa vuol dire avere clienti veri, orari stretti e un lavoro da finire bene. Nel tempo libero faccio scherma, nella top 20 svizzera, e gioco a scacchi.</p>
     </div>
   </div>
 </section>
