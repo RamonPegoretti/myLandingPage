@@ -52,12 +52,32 @@
     if (score === 15) setTimeout(() => toast(t('toast.win')), 1900);
   }
 
+  /* ---------------- text decode ("compiling") ---------------- */
+  const GLYPHS = '<>/{}[]=+*#01░▒▓';
+  function decode(el) {
+    if (reduced) return;
+    const final = el.textContent, len = final.length, t0 = performance.now(), dur = 520;
+    el.setAttribute('aria-label', final);
+    const step = now => {
+      const k = (now - t0) / dur;
+      let out = '';
+      for (let i = 0; i < len; i++) {
+        const ch = final[i];
+        out += (ch === ' ' || k > (i / len) * 0.8 + 0.1) ? ch : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+      }
+      el.textContent = out;
+      if (k < 1) requestAnimationFrame(step); else { el.textContent = final; el.removeAttribute('aria-label'); }
+    };
+    requestAnimationFrame(step);
+  }
+
   /* ---------------- levels ---------------- */
   const levels = $$('.level');
   const pips = $$('[data-pip]');
   function unlock(sec, silent) {
     if (sec.classList.contains('unlocked')) return;
     sec.classList.add('unlocked');
+    $$('.level__title, .final__title', sec).forEach(decode);
     const n = +sec.dataset.level;
     pips[n - 1].classList.add('on');
     if (!silent) { setScore(score + 3); toast(t('toast.unlock').replace('{n}', '0' + n)); }
@@ -65,7 +85,7 @@
   }
   const unlockIO = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting) unlock(e.target);
-  }), { threshold: 0, rootMargin: '0px 0px -45% 0px' });
+  }), { threshold: 0, rootMargin: '0px 0px -20% 0px' });
   const hereIO = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting) pips.forEach((p, i) => p.classList.toggle('here', i + 1 === +e.target.dataset.level));
   }), { rootMargin: '-50% 0px -50% 0px' });
@@ -96,15 +116,25 @@
   }
 
   /* ---------------- configurator (level 02) ---------------- */
-  const mini = $('#mini'), cfg = $('#config'), builtEl = $('#built');
-  function syncMini() {
-    mini.dataset.style = cfg.querySelector('input[name="style"]:checked').value;
+  const mini = $('#mini'), cfg = $('#config'), builtEl = $('#built'), screenEl = $('#screen');
+  function countOn() { builtEl.textContent = $$('input[name="sec"]:checked', cfg).length; }
+  function initMini() {
     const on = new Set($$('input[name="sec"]:checked', cfg).map(i => i.value));
     $$('[data-sec]', mini).forEach(el => el.classList.toggle('off', !on.has(el.dataset.sec)));
-    builtEl.textContent = on.size;
+    countOn();
   }
-  cfg.addEventListener('change', syncMini);
-  syncMini();
+  cfg.addEventListener('change', e => {
+    const inp = e.target;
+    if (inp.name === 'style') { mini.dataset.style = inp.value; return; }
+    const els = $$(`[data-sec="${inp.value}"]`, mini);
+    countOn();
+    els.forEach(el => {
+      el.classList.remove('assemble');
+      if (inp.checked) { el.classList.remove('off'); void el.offsetWidth; el.classList.add('assemble'); }
+      else el.classList.add('off');
+    });
+  });
+  initMini();
 
   // load the template fonts only when level 02 gets close
   const tplFonts = $('#tplFonts');
@@ -120,121 +150,22 @@
 
   /* ---------------- touché lamp ---------------- */
   const touche = $('#touche');
-  touche.addEventListener('pointerdown', () => touche.classList.add('hit'));
-
-  /* ---------------- particle field (start screen) ---------------- */
-  const cvs = $('#field');
-  const ctx = cvs.getContext('2d');
-  let W, H, DPR, parts = [], running = true, visible = true;
-  const mouse = { x: -9999, y: -9999, down: 0 };
-
-  function build() {
-    DPR = Math.min(2, devicePixelRatio || 1);
-    W = cvs.clientWidth; H = cvs.clientHeight;
-    cvs.width = W * DPR; cvs.height = H * DPR;
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-
-    // draw the word off-screen and sample it
-    const off = document.createElement('canvas');
-    off.width = W; off.height = H;
-    const o = off.getContext('2d');
-    const word = 'RAMON';
-    let size = Math.min(W * 0.27, H * 0.42);
-    o.font = `900 ${size}px Unbounded, sans-serif`;
-    const mw = o.measureText(word).width;
-    if (mw > W * 0.9) { size *= (W * 0.9) / mw; o.font = `900 ${size}px Unbounded, sans-serif`; }
-    o.textAlign = 'center'; o.textBaseline = 'middle';
-    o.fillStyle = '#fff';
-    const cy = W < 600 ? H * 0.36 : H * 0.42;
-    o.fillText(word, W / 2, cy);
-
-    const data = o.getImageData(0, 0, W, H).data;
-    const gap = W < 600 ? 4 : Math.max(5, Math.round(size / 34));
-    const old = parts;
-    parts = [];
-    for (let y = 0; y < H; y += gap) {
-      for (let x = 0; x < W; x += gap) {
-        if (data[(y * W + x) * 4 + 3] > 128) {
-          const r = Math.random();
-          parts.push({
-            hx: x, hy: y,
-            x: Math.random() * W, y: Math.random() * H,
-            vx: 0, vy: 0,
-            c: r < 0.06 ? '#FF3B3B' : r < 0.2 ? '#36F28B' : '#EDEBE6',
-            s: gap * (0.45 + Math.random() * 0.35)
-          });
-        }
-      }
-    }
-    // keep positions from old field when resizing (no jump)
-    for (let i = 0; i < Math.min(old.length, parts.length); i++) { parts[i].x = old[i].x; parts[i].y = old[i].y; }
-    // ambient dust
-    const dust = Math.round((W * H) / 9000);
-    for (let i = 0; i < dust; i++) {
-      parts.push({ hx: Math.random() * W, hy: Math.random() * H, x: Math.random() * W, y: Math.random() * H, vx: 0, vy: 0, c: 'rgba(237,235,230,.18)', s: 1.2, dust: true, ph: Math.random() * 6.28 });
-    }
-    if (reduced) { parts.forEach(p => { p.x = p.hx; p.y = p.hy; }); draw(0); }
-  }
-
-  function draw(time) {
-    ctx.clearRect(0, 0, W, H);
-    const R = W < 600 ? 70 : 120, R2 = R * R;
-    for (const p of parts) {
-      if (!reduced) {
-        let tx = p.hx, ty = p.hy;
-        if (p.dust) { tx += Math.sin(time / 1800 + p.ph) * 14; ty += Math.cos(time / 2200 + p.ph) * 14; }
-        const dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
-        if (d2 < R2) {
-          const f = (1 - d2 / R2) * (p.dust ? 2 : 6);
-          const d = Math.sqrt(d2) || 1;
-          p.vx += (dx / d) * f; p.vy += (dy / d) * f;
-        }
-        p.vx += (tx - p.x) * 0.045; p.vy += (ty - p.y) * 0.045;
-        p.vx *= 0.82; p.vy *= 0.82;
-        p.x += p.vx; p.y += p.vy;
-      }
-      ctx.fillStyle = p.c;
-      ctx.fillRect(p.x, p.y, p.s, p.s);
-    }
-    // cursor reticle (piste guard)
-    if (mouse.x > 0 && !reduced) {
-      ctx.strokeStyle = 'rgba(54,242,139,.55)';
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.arc(mouse.x, mouse.y, 18 + mouse.down * 30, 0, 6.283); ctx.stroke();
-      mouse.down *= 0.9;
-    }
-  }
-
-  function loop(time) {
-    if (running && visible) draw(time);
-    requestAnimationFrame(loop);
-  }
-
-  function setMouse(e) {
-    const r = cvs.getBoundingClientRect();
-    mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
-  }
-  cvs.addEventListener('pointermove', setMouse, { passive: true });
-  cvs.addEventListener('pointerleave', () => { mouse.x = mouse.y = -9999; });
-  cvs.addEventListener('pointerdown', e => {
-    setMouse(e);
-    mouse.down = 1;
-    // burst: kick every particle away from the hit
-    for (const p of parts) {
-      const dx = p.x - mouse.x, dy = p.y - mouse.y, d = Math.hypot(dx, dy) || 1;
-      const f = Math.max(0, 1 - d / 400) * 38;
-      p.vx += (dx / d) * f; p.vy += (dy / d) * f;
-    }
+  touche.addEventListener('pointerdown', e => {
+    touche.classList.add('hit');
+    window.FX && FX.burst(e.clientX, e.clientY);
   });
 
-  new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(cvs);
-  let rz;
-  addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(build, 150); });
-
-  const fontReady = document.fonts && document.fonts.load ? document.fonts.load('900 100px Unbounded') : Promise.resolve();
-  Promise.race([fontReady, new Promise(r => setTimeout(r, 1500))]).then(() => {
-    build();
-    if (!reduced) requestAnimationFrame(loop);
+  /* ---------------- particles: scenes + start-screen shockwave ---------------- */
+  const sceneIO = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting || !window.FX) return;
+    const n = e.target.dataset.level;
+    FX.scene(n ? '0' + n : 'start');
+  }), { rootMargin: '-45% 0px -45% 0px' });
+  sceneIO.observe($('#start'));
+  levels.forEach(l => sceneIO.observe(l));
+  $('#start').addEventListener('pointerdown', e => {
+    if (e.target.closest('a,button')) return;
+    window.FX && FX.shockwave(e.clientX, e.clientY);
   });
 
   /* start button: smooth jump into level 01 */

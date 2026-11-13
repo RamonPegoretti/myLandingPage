@@ -51,13 +51,15 @@
   </div>
 </header>
 
+<canvas class="field" id="field" aria-hidden="true"></canvas>
+<canvas class="fxlayer" id="fx" aria-hidden="true"></canvas>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <main>
 
 <!-- ============ START SCREEN ============ -->
 <section class="start" id="start">
-  <canvas class="field" id="field" aria-hidden="true"></canvas>
   <div class="start__ui">
     <p class="start__kicker"><span class="blink">●</span> <span data-i18n="start.kicker">SVILUPPATORE WEB · TICINO · 18 ANNI</span></p>
     <h1 class="start__title">
@@ -109,7 +111,7 @@
         <div><dt data-i18n="l1.lang">Lingue</dt><dd data-i18n="l1.langv">Italiano, inglese</dd></div>
       </dl>
 
-      <ul class="bars" aria-label="Competenze" data-gap="cv">
+      <ul class="bars" aria-label="Competenze" data-gap="cv" data-wire="skills.map(s =&gt; &lt;Bar/&gt;)" style="--d:0">
         <li style="--v:.92"><span>HTML / CSS</span><i></i></li>
         <li style="--v:.84"><span>JavaScript</span><i></i></li>
         <li style="--v:.78"><span>UI design</span><i></i></li>
@@ -195,7 +197,7 @@
     <p class="price__note" data-i18n="l3.note">Prezzo chiaro prima di iniziare. Niente sorprese, niente abbonamenti nascosti.</p>
   </div>
 
-  <div class="powerups">
+  <div class="powerups" data-wire="plans.forEach(render)" style="--d:0">
     <p class="mono dim" data-i18n="l3.pu">POWER-UP MENSILI · FACOLTATIVI</p>
     <ul>
       <li><span class="mono">+HP</span><strong>Hosting</strong><em>CHF 25<small data-i18n="mo">/mese</small></em></li>
@@ -237,7 +239,7 @@
       <span class="touche__txt" data-i18n="l5.wa">Scrivimi su WhatsApp</span>
       <span class="mono dim">+41 78 422 83 81</span>
     </a>
-    <ul class="links">
+    <ul class="links" data-wire="contacts.map(Link)" style="--d:0">
       <li><a href="mailto:ramopego@gmail.com"><span class="mono dim">EMAIL</span>ramopego@gmail.com</a></li>
       <li><a href="tel:+41784228381"><span class="mono dim" data-i18n="l5.tel">TELEFONO</span>+41 78 422 83 81</a></li>
       <li><a href="https://instagram.com/il_.pego" target="_blank" rel="noopener"><span class="mono dim">INSTAGRAM</span>@il_.pego</a></li>
@@ -262,6 +264,7 @@
 </nav>
 
 <script src="i18n.js"></script>
+<script src="fx.js"></script>
 <script src="game.js"></script>
 </body>
 </html>
