@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ramon Pegoretti · Siti web in Ticino</title>
+<meta name="description" content="Sviluppatore web in Ticino. Siti veloci e su misura per attività locali, da CHF 1'000.">
+<meta name="theme-color" content="#08090A">
+<meta property="og:title" content="Ramon Pegoretti · Siti web in Ticino">
+<meta property="og:description" content="Premi start. Siti veloci e su misura per attività locali in Ticino.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2308090A'/%3E%3Ccircle cx='11' cy='16' r='5' fill='%23FF3B3B'/%3E%3Ccircle cx='21' cy='16' r='5' fill='%2336F28B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>document.documentElement.classList.add('js')</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"ProfessionalService","name":"Ramon Pegoretti · Web","description":"Siti web per attività locali in Ticino","areaServed":"Ticino","email":"ramopego@gmail.com","telephone":"+41784228381","priceRange":"da CHF 1000"}
+</script>
+</head>
+<body>
+
+<!-- ============ HUD (fencing scoreboard) ============ -->
+<header class="hud" aria-label="Navigazione">
+  <a class="hud__id" href="#start">
+    <span class="lamp lamp--red" aria-hidden="true"></span>
+    <span>R.PEGORETTI</span>
+  </a>
+
+  <nav class="hud__board" aria-label="Livelli">
+    <ol class="pips">
+      <li><a href="#chi" data-pip="1" aria-label="Livello 1">01</a></li>
+      <li><a href="#cosa" data-pip="2" aria-label="Livello 2">02</a></li>
+      <li><a href="#prezzi" data-pip="3" aria-label="Livello 3">03</a></li>
+      <li><a href="#come" data-pip="4" aria-label="Livello 4">04</a></li>
+      <li><a href="#contatto" data-pip="5" aria-label="Livello 5">05</a></li>
+    </ol>
+    <div class="score" aria-live="polite">
+      <span class="score__label" data-i18n="hud.score">PUNTI</span>
+      <span class="score__num" id="score">00</span>
+    </div>
+  </nav>
+
+  <div class="hud__right">
+    <button class="lang" id="lang" type="button" aria-label="Switch to English">
+      <span class="lang__on">IT</span><span>EN</span>
+    </button>
+    <button class="skip" id="skip" type="button" data-i18n="hud.skip">Salta il gioco</button>
+  </div>
+</header>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<main>
+
+<!-- ============ START SCREEN ============ -->
+<section class="start" id="start">
+  <canvas class="field" id="field" aria-hidden="true"></canvas>
+  <div class="start__ui">
+    <p class="start__kicker"><span class="blink">●</span> <span data-i18n="start.kicker">SVILUPPATORE WEB · TICINO · 18 ANNI</span></p>
+    <h1 class="start__title">
+      <span class="sr-title">Ramon Pegoretti</span>
+      <span class="start__line" data-i18n="start.line">Siti web che si giocano, non che si sfogliano.</span>
+    </h1>
+    <div class="start__actions">
+      <a class="btn-start" href="#chi" id="startBtn">
+        <span class="btn-start__key">▶</span>
+        <span data-i18n="start.cta">PREMI START</span>
+      </a>
+      <p class="start__hint" data-i18n="start.hint">muovi il mouse · tocca lo schermo</p>
+    </div>
+  </div>
+  <div class="start__meta mono">
+    <span>46.0037° N · 8.9511° E</span>
+    <span data-i18n="start.meta">MALCANTONE → LUGANO</span>
+  </div>
+</section>
+
+<!-- ============ LEVEL 01 · CHI SONO ============ -->
+<section class="level" id="chi" data-level="1">
+  <div class="level__tag mono"><span data-i18n="lv">LIVELLO</span> 01<span class="dim">/05</span></div>
+  <h2 class="level__title" data-i18n="l1.title">Seleziona il giocatore</h2>
+
+  <div class="player">
+    <div class="player__card">
+      <div class="player__portrait" data-gap="photo">
+        <svg viewBox="0 0 200 240" aria-hidden="true" class="player__piste">
+          <defs>
+            <pattern id="scan" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="1" fill="currentColor" opacity=".12"/></pattern>
+          </defs>
+          <rect width="200" height="240" fill="url(#scan)"/>
+          <line x1="20" y1="200" x2="180" y2="200" stroke="currentColor" stroke-width="1" opacity=".5"/>
+          <line x1="100" y1="190" x2="100" y2="210" stroke="currentColor" stroke-width="1" opacity=".5"/>
+          <text x="100" y="128" text-anchor="middle" font-family="Unbounded" font-weight="900" font-size="72" fill="currentColor">RP</text>
+        </svg>
+        <span class="mono cap" data-i18n="l1.photo">FOTO IN ARRIVO · 4:5</span>
+      </div>
+      <div class="player__name">
+        <span class="mono dim">P1</span>
+        <strong>Ramon<br>Pegoretti</strong>
+      </div>
+    </div>
+
+    <div class="player__stats">
+      <dl class="sheet">
+        <div><dt data-i18n="l1.class">Classe</dt><dd data-i18n="l1.classv">Sviluppatore web</dd></div>
+        <div><dt data-i18n="l1.school">Formazione</dt><dd><span data-gap="cv" data-i18n="l1.schoolv">AFC Informatico, sviluppo applicazioni · SAM Trevano</span></dd></div>
+        <div><dt data-i18n="l1.base">Base</dt><dd>Malcantone, Ticino</dd></div>
+        <div><dt data-i18n="l1.weapon">Arma</dt><dd data-i18n="l1.weaponv">Spada (scherma)</dd></div>
+        <div><dt data-i18n="l1.lang">Lingue</dt><dd data-i18n="l1.langv">Italiano, inglese</dd></div>
+      </dl>
+
+      <ul class="bars" aria-label="Competenze" data-gap="cv">
+        <li style="--v:.92"><span>HTML / CSS</span><i></i></li>
+        <li style="--v:.84"><span>JavaScript</span><i></i></li>
+        <li style="--v:.78"><span>UI design</span><i></i></li>
+        <li style="--v:.66"><span>Java</span><i></i></li>
+        <li style="--v:.6"><span>SQL</span><i></i></li>
+      </ul>
+
+      <p class="bio" data-i18n="l1.bio">Ho 18 anni e studio informatica a Trevano. Di giorno scrivo codice, la sera tiro di spada. Dalla scherma ho imparato una cosa che vale anche per il web: vince chi è preciso e veloce.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LEVEL 02 · COSA COSTRUISCO (builder) ============ -->
+<section class="level level--build" id="cosa" data-level="2">
+  <div class="level__tag mono"><span data-i18n="lv">LIVELLO</span> 02<span class="dim">/05</span></div>
+  <h2 class="level__title" data-i18n="l2.title">Costruisci un sito. Adesso.</h2>
+  <p class="level__lead" data-i18n="l2.lead">Tocca i blocchi (o trascinali nello schermo). È così che lavoro: pezzo per pezzo, finché il tuo sito è pronto.</p>
+
+  <div class="builder">
+    <div class="tray" id="tray" role="list">
+      <button class="block" data-block="nav" role="listitem"><b>01</b><span data-i18n="b.nav">Menu</span></button>
+      <button class="block" data-block="hero" role="listitem"><b>02</b><span data-i18n="b.hero">Copertina</span></button>
+      <button class="block" data-block="cards" role="listitem"><b>03</b><span data-i18n="b.cards">Servizi</span></button>
+      <button class="block" data-block="hours" role="listitem"><b>04</b><span data-i18n="b.hours">Orari</span></button>
+      <button class="block" data-block="map" role="listitem"><b>05</b><span data-i18n="b.map">Mappa</span></button>
+      <button class="block" data-block="cta" role="listitem"><b>06</b><span data-i18n="b.cta">Prenota</span></button>
+    </div>
+
+    <div class="screen" id="screen">
+      <div class="screen__bar"><i></i><i></i><i></i><span class="mono" id="url">tuaattivita.ch</span></div>
+      <div class="screen__body" id="canvasSite">
+        <p class="screen__empty mono" id="empty" data-i18n="l2.empty">// schermo vuoto. aggiungi un blocco.</p>
+      </div>
+      <div class="screen__done" id="done" hidden>
+        <p class="mono" data-i18n="l2.doneMsg">SITO COMPLETO · ONLINE</p>
+        <button class="mono reset" id="reset" type="button" data-i18n="l2.again">↺ ricomincia</button>
+      </div>
+    </div>
+  </div>
+  <p class="build__meter mono"><span id="built">0</span>/6 <span data-i18n="l2.blocks">blocchi</span> · <span data-i18n="l2.speed">questa pagina si è caricata in</span> <span id="ms">–</span> ms</p>
+</section>
+
+<!-- ============ LEVEL 03 · PREZZI ============ -->
+<section class="level level--price" id="prezzi" data-level="3">
+  <div class="level__tag mono"><span data-i18n="lv">LIVELLO</span> 03<span class="dim">/05</span></div>
+  <h2 class="level__title" data-i18n="l3.title">Il prezzo, senza giri.</h2>
+
+  <div class="price">
+    <p class="price__from mono" data-i18n="l3.from">IL TUO SITO DA</p>
+    <p class="price__num"><span class="cur">CHF</span><span id="priceNum" data-to="1000">1'000</span></p>
+    <p class="price__note" data-i18n="l3.note">Prezzo chiaro prima di iniziare. Niente sorprese, niente abbonamenti nascosti.</p>
+  </div>
+
+  <div class="powerups">
+    <p class="mono dim" data-i18n="l3.pu">POWER-UP MENSILI · FACOLTATIVI</p>
+    <ul>
+      <li><span class="mono">+HP</span><strong>Hosting</strong><em>CHF 25<small data-i18n="mo">/mese</small></em></li>
+      <li><span class="mono">+DEF</span><strong data-i18n="l3.maint">Manutenzione</strong><em>CHF 69<small data-i18n="mo">/mese</small></em></li>
+      <li><span class="mono">+MAX</span><strong>Premium</strong><em>CHF 129<small data-i18n="mo">/mese</small></em></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ LEVEL 04 · COME FUNZIONA ============ -->
+<section class="level level--quest" id="come" data-level="4">
+  <div class="level__tag mono"><span data-i18n="lv">LIVELLO</span> 04<span class="dim">/05</span></div>
+  <h2 class="level__title" data-i18n="l4.title">Tre mosse. Come un assalto.</h2>
+
+  <ol class="quest">
+    <li>
+      <span class="quest__n">EN<br>GARDE</span>
+      <div><h3 data-i18n="l4.s1">Parliamo</h3><p data-i18n="l4.s1p">Una chiamata o un caffè, gratis. Mi racconti la tua attività, io ti dico cosa serve davvero.</p></div>
+    </li>
+    <li>
+      <span class="quest__n">PRÊTS</span>
+      <div><h3 data-i18n="l4.s2">Ti mostro la demo</h3><p><span data-i18n="l4.s2p">Prima di pagare vedi il sito vero, con i tuoi testi e i tuoi colori.</span> <span data-gap="timing" class="gap-inline" data-i18n="l4.s2t">In pochi giorni.</span></p></div>
+    </li>
+    <li>
+      <span class="quest__n">ALLEZ</span>
+      <div><h3 data-i18n="l4.s3">Online</h3><p><span data-i18n="l4.s3p">Il sito va online con il tuo dominio. Se vuoi, me ne occupo io anche dopo.</span></p></div>
+    </li>
+  </ol>
+</section>
+
+<!-- ============ LEVEL 05 · CONTATTO ============ -->
+<section class="level level--final" id="contatto" data-level="5">
+  <div class="level__tag mono"><span data-i18n="lv">LIVELLO</span> 05<span class="dim">/05</span> · <span data-i18n="l5.tag">ULTIMA STOCCATA</span></div>
+  <h2 class="final__title" data-i18n="l5.title">Tocca a te.</h2>
+
+  <div class="final">
+    <a class="touche" id="touche" href="https://wa.me/41784228381" target="_blank" rel="noopener">
+      <span class="touche__lamp" aria-hidden="true"></span>
+      <span class="touche__txt" data-i18n="l5.wa">Scrivimi su WhatsApp</span>
+      <span class="mono dim">+41 78 422 83 81</span>
+    </a>
+    <ul class="links">
+      <li><a href="mailto:ramopego@gmail.com"><span class="mono dim">EMAIL</span>ramopego@gmail.com</a></li>
+      <li><a href="tel:+41784228381"><span class="mono dim" data-i18n="l5.tel">TELEFONO</span>+41 78 422 83 81</a></li>
+      <li><a href="https://instagram.com/il_.pego" target="_blank" rel="noopener"><span class="mono dim">INSTAGRAM</span>@il_.pego</a></li>
+    </ul>
+    <p class="final__micro mono" data-i18n="l5.micro">Rispondo entro 24 ore. Anche la sera, dopo l'allenamento.</p>
+  </div>
+
+  <footer class="foot mono">
+    <span>© 2026 Ramon Pegoretti</span>
+    <span data-i18n="foot.made">Fatto a mano: HTML, CSS, JS. Zero librerie.</span>
+    <a href="#start" data-i18n="foot.top">↑ ricomincia</a>
+  </footer>
+</section>
+
+</main>
+
+<!-- sticky phone bar -->
+<nav class="dock" aria-label="Contatto rapido">
+  <a href="https://wa.me/41784228381" class="dock__main">WhatsApp</a>
+  <a href="tel:+41784228381" data-i18n="dock.call">Chiama</a>
+  <a href="mailto:ramopego@gmail.com">Email</a>
+</nav>
+
+<script src="i18n.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
