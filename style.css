@@ -333,3 +333,19 @@ html:not(.js) .sr-title{position:static;width:auto;height:auto;display:block;fon
 .mini [data-sec].assemble{animation:popup .9s cubic-bezier(.16,1,.3,1) both}
 @keyframes popup{from{opacity:0;transform:translateY(14px) scale(.985)}}
 @media (prefers-reduced-motion:reduce){.js [data-wire]::after{display:none}}
+
+/* ============ boot screen ============ */
+.boot{display:none}
+.js .boot{display:grid;place-items:center;position:fixed;inset:0;z-index:100;background:var(--bg);
+  transition:clip-path .7s cubic-bezier(.7,0,.2,1);clip-path:inset(0 0 0 0)}
+.boot.done{clip-path:inset(0 0 100% 0)}
+.boot__in{width:min(320px,80vw);display:grid;gap:10px;font-size:11px}
+.boot__in p{margin:0}
+.boot__line{color:var(--green)}
+.boot__bar{height:6px;background:var(--line);overflow:hidden}
+.boot__bar i{display:block;height:100%;background:var(--green);transform-origin:left;transform:scaleX(0);box-shadow:0 0 12px var(--green)}
+.boot__pct{justify-self:end;font:800 22px var(--mono);color:var(--red);text-shadow:0 0 10px rgba(255,59,59,.6)}
+
+/* ============ configurator empty state ============ */
+.m-empty{margin:0 22px 22px;padding:14px 16px;border:1px dashed var(--rule);color:var(--mute);font-size:11px;letter-spacing:.02em;text-transform:none;
+  animation:popup .6s cubic-bezier(.16,1,.3,1) both}

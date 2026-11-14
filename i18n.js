@@ -41,6 +41,7 @@ window.I18N = {
     "m.open": "Open now · closes at 22:00",
     "m.carta": "The menu",
     "m.bookFull": "Book a table",
+    "m.empty": "Just the cover? That works too. Tick a section to see it appear.",
     "l3.title": "The price, straight up.",
     "l3.from": "YOUR WEBSITE FROM",
     "l3.note": "A clear price before we start. No surprises, no hidden subscriptions.",

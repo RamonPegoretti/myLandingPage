@@ -33,6 +33,32 @@
     applyLang();
   });
 
+  /* ---------------- boot screen ---------------- */
+  (() => {
+    const boot = $('#boot');
+    if (!boot) return;
+    if (reduced) { boot.remove(); return; }
+    const bar = $('#bootBar'), pct = $('#bootPct'), line = $('#bootLine');
+    const steps = lang === 'en' ? ['LOADING PARTICLES', 'BUILDING LEVELS', 'READY'] : ['CARICAMENTO PARTICELLE', 'COSTRUZIONE LIVELLI', 'PRONTO'];
+    line.textContent = steps[0];
+    let shown = 0, target = 70, ready = false;
+    const t0 = performance.now();
+    const finish = () => { ready = true; target = 100; };
+    document.addEventListener('fx:ready', finish, { once: true });
+    setTimeout(finish, 2200); // never hold the page longer than this
+    const tick = now => {
+      shown += (target - shown) * 0.12;
+      if (target === 100 && 100 - shown < 0.6) shown = 100;
+      const v = Math.round(shown);
+      bar.style.transform = `scaleX(${v / 100})`;
+      pct.textContent = v;
+      line.textContent = steps[v >= 100 ? 2 : v > 45 ? 1 : 0];
+      if (v >= 100 && ready && now - t0 > 650) { boot.classList.add('done'); setTimeout(() => boot.remove(), 700); return; }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  })();
+
   /* ---------------- toast + score ---------------- */
   const toastEl = $('#toast');
   let toastTimer;
@@ -117,7 +143,12 @@
 
   /* ---------------- configurator (level 02) ---------------- */
   const mini = $('#mini'), cfg = $('#config'), builtEl = $('#built'), screenEl = $('#screen');
-  function countOn() { builtEl.textContent = $$('input[name="sec"]:checked', cfg).length; }
+  const mEmpty = $('#mEmpty');
+  function countOn() {
+    const n = $$('input[name="sec"]:checked', cfg).length;
+    builtEl.textContent = n;
+    mEmpty.hidden = n > 0;
+  }
   function initMini() {
     const on = new Set($$('input[name="sec"]:checked', cfg).map(i => i.value));
     $$('[data-sec]', mini).forEach(el => el.classList.toggle('off', !on.has(el.dataset.sec)));

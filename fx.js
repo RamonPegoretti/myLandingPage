@@ -31,7 +31,7 @@
     o.fillStyle = '#fff'; o.textBaseline = 'middle';
     let cx, cy, size, text;
     if (key === 'start') {
-      text = 'RAMON';
+      text = document.documentElement.dataset.fxStart || 'RAMON';
       size = Math.min(W * 0.27, H * 0.42);
       cx = W / 2; cy = mobile ? H * 0.36 : H * 0.42;
     } else {
@@ -238,5 +238,6 @@
   Promise.race([fontReady, new Promise(r => setTimeout(r, 1500))]).then(() => {
     resize();
     if (!reduced) requestAnimationFrame(loop);
+    document.dispatchEvent(new Event('fx:ready'));
   });
 })();

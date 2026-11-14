@@ -9,7 +9,16 @@
 <meta property="og:title" content="Ramon Pegoretti · Siti web in Ticino">
 <meta property="og:description" content="Premi start. Siti veloci e su misura per attività locali in Ticino.">
 <meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2308090A'/%3E%3Ccircle cx='11' cy='16' r='5' fill='%23FF3B3B'/%3E%3Ccircle cx='21' cy='16' r='5' fill='%2336F28B'/%3E%3C/svg%3E">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="canonical" href="https://ramonpegoretti.github.io/myLandingPage/">
+<meta property="og:url" content="https://ramonpegoretti.github.io/myLandingPage/">
+<meta property="og:image" content="https://ramonpegoretti.github.io/myLandingPage/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="it_CH">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
@@ -21,6 +30,14 @@
 </script>
 </head>
 <body>
+<div class="boot" id="boot" aria-hidden="true">
+  <div class="boot__in mono">
+    <p><span class="dim">&gt;</span> ramon.exe</p>
+    <p class="boot__line" id="bootLine">CARICAMENTO PARTICELLE</p>
+    <div class="boot__bar"><i id="bootBar"></i></div>
+    <p class="boot__pct"><span id="bootPct">0</span>%</p>
+  </div>
+</div>
 
 <!-- ============ HUD (fencing scoreboard) ============ -->
 <header class="hud" aria-label="Navigazione">
@@ -178,6 +195,7 @@
         </section>
         <section class="m-gallery" data-sec="gallery"><i></i><i></i><i></i></section>
         <section class="m-map" data-sec="map"><span>Via Lungolago 4 · 6987 Caslano</span></section>
+        <p class="m-empty mono" id="mEmpty" hidden data-i18n="m.empty">Solo la copertina? Funziona anche così. Spunta una sezione per vederla apparire.</p>
         <section class="m-book" data-sec="book"><span data-i18n="m.bookFull">Prenota un tavolo</span><b>→</b></section>
       </div>
     </div>

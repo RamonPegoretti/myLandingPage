@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="it" data-fx-start="404">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- 404 can be served at any depth: resolve every path from the site root.
+     If the site moves to its own domain, change this to "/". -->
+<base href="/myLandingPage/">
+<title>404 · Livello non trovato · Ramon Pegoretti</title>
+<meta name="description" content="Questa pagina non esiste. Torna al sito di Ramon Pegoretti.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#08090A">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .lost{position:relative;z-index:1;min-height:100svh;display:grid;align-content:end;padding:0 var(--gut) clamp(40px,9vh,96px)}
+  .lost__tag{color:var(--red);margin:0 0 18px}
+  .lost__title{margin:0;font:900 clamp(34px,6vw,84px)/.95 var(--display);letter-spacing:-.04em;max-width:14ch;text-wrap:balance}
+  .lost__text{margin:18px 0 0;max-width:44ch;color:var(--dim)}
+  .lost__row{display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px;margin-top:36px}
+  .continue{font:800 13px var(--mono);letter-spacing:.14em;color:var(--ink)}
+  .continue b{display:inline-block;min-width:2ch;color:var(--red);font-size:28px;vertical-align:-4px;text-shadow:0 0 12px rgba(255,59,59,.6)}
+  .continue.over b{display:none}
+  .lost__home{font:600 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim);border-bottom:1px dashed var(--dim);text-decoration:none}
+  .lost__home:hover{color:var(--ink)}
+  [lang-block]{display:none}
+  html[lang="it"] [lang-block="it"],html[lang="en"] [lang-block="en"]{display:revert}
+  html:not(.js) [lang-block="it"]{display:revert}
+  @media (max-width:600px){body{padding-bottom:0}}
+</style>
+<script>
+  document.documentElement.classList.add('js');
+  try { if (localStorage.getItem('lang') === 'en') document.documentElement.lang = 'en'; } catch (e) {}
+</script>
+</head>
+<body>
+<canvas class="field" id="field" aria-hidden="true"></canvas>
+<canvas class="fxlayer" id="fx" aria-hidden="true"></canvas>
+
+<header class="hud">
+  <a class="hud__id" href="./"><span class="lamp lamp--red" aria-hidden="true"></span><span>R.PEGORETTI</span></a>
+  <div class="hud__board">
+    <div class="score"><span class="score__label">ERR</span><span class="score__num">404</span></div>
+  </div>
+  <span></span>
+</header>
+
+<main class="lost">
+  <p class="lost__tag mono">
+    <span lang-block="it">LIVELLO NON TROVATO</span><span lang-block="en" lang="en">LEVEL NOT FOUND</span>
+  </p>
+  <h1 class="lost__title">
+    <span lang-block="it">Questa pagina è uscita dalla mappa.</span>
+    <span lang-block="en" lang="en">This page fell off the map.</span>
+  </h1>
+  <p class="lost__text">
+    <span lang-block="it">Il link è sbagliato o la pagina non esiste più. Il resto del sito funziona benissimo.</span>
+    <span lang-block="en" lang="en">The link is wrong or the page no longer exists. The rest of the site works just fine.</span>
+  </p>
+  <div class="lost__row">
+    <a class="btn-start" href="./">
+      <span class="btn-start__key">▶</span>
+      <span lang-block="it">CONTINUA</span><span lang-block="en" lang="en">CONTINUE</span>
+    </a>
+    <p class="continue" id="continue" aria-live="polite">
+      <span class="cnt-label"><span lang-block="it">CONTINUARE?</span><span lang-block="en" lang="en">CONTINUE?</span></span>
+      <b id="count">9</b>
+    </p>
+    <a class="lost__home" href="./#contatto">
+      <span lang-block="it">oppure scrivimi</span><span lang-block="en" lang="en">or message me</span>
+    </a>
+  </div>
+</main>
+
+<script src="fx.js"></script>
+<script>
+  (() => {
+    // arcade-style countdown that ends in GAME OVER (no forced redirect)
+    const box = document.getElementById('continue'), n = document.getElementById('count');
+    const label = box.querySelector('.cnt-label');
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { box.hidden = true; return; }
+    let c = 9;
+    const id = setInterval(() => {
+      c -= 1;
+      if (c >= 0) { n.textContent = c; return; }
+      clearInterval(id);
+      box.classList.add('over');
+      label.textContent = 'GAME OVER';
+      window.FX && FX.burst(innerWidth / 2, innerHeight * 0.4, 90);
+    }, 1000);
+  })();
+</script>
+</body>
+</html>
