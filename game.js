@@ -26,6 +26,7 @@
     btn.setAttribute('aria-label', t('lang.aria'));
     btn.children[0].classList.toggle('lang__on', lang === 'it');
     btn.children[1].classList.toggle('lang__on', lang === 'en');
+    renderAll();
   }
   $('#lang').addEventListener('click', () => {
     lang = lang === 'it' ? 'en' : 'it';
@@ -107,7 +108,6 @@
     const n = +sec.dataset.level;
     pips[n - 1].classList.add('on');
     if (!silent) { setScore(score + 3); toast(t('toast.unlock').replace('{n}', '0' + n)); }
-    if (n === 3) rollPrice();
   }
   const unlockIO = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting) unlock(e.target);
@@ -125,21 +125,138 @@
     $('#prezzi').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
   });
 
-  /* ---------------- price counter ---------------- */
-  const priceEl = $('#priceNum');
-  const fmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, "'");
-  function rollPrice() {
-    const to = +priceEl.dataset.to;
-    if (reduced) { priceEl.textContent = fmt(to); return; }
-    const t0 = performance.now(), dur = 1400;
+  /* ---------------- pricing (levels 02 + 03) ----------------
+     Prices come from Ramon's calculator config (/priceCalc/pricing.json, same origin).
+     FALLBACK is a copy used when that file can't be loaded (local preview, custom domain). */
+  const FALLBACK = {
+    tiers: [{ id: 'base', price: 1000, included: 1, unitPrice: 150 }, { id: 'advanced', price: 2500, included: 1, unitPrice: 200 }],
+    options: [{ id: 'languages', choices: [{ id: '1' }, { id: '2', percent: 10 }, { id: '3', percent: 20 }, { id: '4', percent: 30 }] }],
+    recurring: { plans: [{ id: 'hosting', price: 25 }, { id: 'maintenance', price: 69, default: true }, { id: 'premium', price: 129 }] },
+    billing: [{ id: 'monthly', multiplier: 1, months: 1 }, { id: 'yearly', multiplier: 9, listMultiplier: 12, months: 12 }],
+    conditionalDiscounts: [
+      { when: { plan: 'hosting', billing: 'yearly' }, percent: 5, max: 30 },
+      { when: { plan: 'maintenance', billing: 'yearly' }, percent: 10, max: 150 },
+      { when: { plan: 'premium', billing: 'yearly' }, percent: 15, max: 300 }]
+  };
+  let P = FALLBACK;
+  // sections that add a page; hours and map live on the home page
+  const PAGE_SECS = ['menu', 'gallery', 'book'];
+  const PLAN_TAG = { none: '—', hosting: '+HP', maintenance: '+DEF', premium: '+MAX' };
+  const sel = { plan: 'maintenance', billing: 'monthly' };
+
+  // whole francs everywhere, except the "per month" equivalent (exact = true)
+  const fmt = (n, exact) => {
+    const r = exact ? Math.round(n * 100) / 100 : Math.round(n);
+    const [i, d] = r.toFixed(Number.isInteger(r) ? 0 : 2).split('.');
+    return i.replace(/\B(?=(\d{3})+(?!\d))/g, "'") + (d ? '.' + d : '');
+  };
+  const byId = (arr, id) => (arr || []).find(x => x.id === id);
+
+  function quote() {
+    const custom = $('#custom').checked;
+    const on = new Set($$('input[name="sec"]:checked').map(i => i.value));
+    const tier = byId(P.tiers, custom ? 'advanced' : 'base') || P.tiers[0];
+    const pages = 1 + PAGE_SECS.filter(s => on.has(s)).length;
+    const extra = Math.max(0, pages - (tier.included || 1));
+    const lines = [{ k: custom ? 'q.custom' : 'q.base', v: tier.price }];
+    let sub = tier.price;
+    if (extra) { sub += extra * tier.unitPrice; lines.push({ k: extra === 1 ? 'q.page' : 'q.pages', n: extra, v: extra * tier.unitPrice }); }
+    const langOpt = byId(P.options, 'languages');
+    const pct = on.has('lang') && langOpt ? (byId(langOpt.choices, '2') || {}).percent || 0 : 0;
+    if (pct) { const a = sub * pct / 100; lines.push({ k: 'q.lang', n: pct, v: a }); sub += a; }
+    const site = sub;
+    let disc = 0;
+    (P.conditionalDiscounts || []).forEach(cd => {
+      const w = cd.when || {};
+      if ((w.plan && w.plan !== sel.plan) || (w.billing && w.billing !== sel.billing) || (w.tier && w.tier !== tier.id)) return;
+      let d = sub * cd.percent / 100;
+      if (cd.max != null) d = Math.min(d, cd.max);
+      disc += d; sub -= d;
+    });
+    const plan = byId(P.recurring && P.recurring.plans, sel.plan);
+    const bill = byId(P.billing, sel.billing) || { multiplier: 1, months: 1 };
+    const yearly = bill.months === 12;
+    const perPeriod = plan ? plan.price * bill.multiplier : 0;
+    const year1 = sub + (plan ? (yearly ? perPeriod : plan.price * 12) : 0);
+    return { lines, site, disc, oneTime: sub, plan, yearly, perPeriod, year1 };
+  }
+
+  // smooth number roll from the value on screen to the new one
+  const rolls = new WeakMap();
+  function roll(el, to) {
+    const from = rolls.has(el) ? rolls.get(el) : to;
+    rolls.set(el, to);
+    if (reduced || from === to) { el.textContent = fmt(to); return; }
+    const t0 = performance.now(), dur = 600;
     const step = now => {
-      const p = Math.min(1, (now - t0) / dur);
-      const e = 1 - Math.pow(1 - p, 4);
-      priceEl.textContent = fmt(Math.round(to * e));
-      if (p < 1) requestAnimationFrame(step);
+      if (rolls.get(el) !== to) return;
+      const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 4);
+      el.textContent = fmt(Math.round(from + (to - from) * e));
+      if (p < 1) requestAnimationFrame(step); else el.textContent = fmt(to);
     };
     requestAnimationFrame(step);
   }
+
+  const lineText = l => t(l.k).replace('{n}', l.n);
+
+  function renderPlans() {
+    const plans = (P.recurring && P.recurring.plans) || [];
+    const list = [{ id: 'none', price: null }, ...plans];
+    $('#planList').innerHTML = list.map(p => {
+      const feats = (t('plan.' + p.id + '.f') || '').split('|').filter(Boolean);
+      const price = p.price == null ? '<em>CHF 0</em>' : `<em>CHF ${fmt(p.price)}<small>${t('mo')}</small></em>`;
+      return `<label class="plan"><input type="radio" name="plan" value="${p.id}"${p.id === sel.plan ? ' checked' : ''}>` +
+        `<span class="plan__in"><span class="mono plan__tag">${PLAN_TAG[p.id] || '+'}</span>` +
+        `<strong>${t('plan.' + p.id) || p.label || p.id}</strong>${price}` +
+        `<span class="plan__f">${feats.map(f => `<span>${f}</span>`).join('')}</span></span></label>`;
+    }).join('');
+  }
+
+  function renderPrice() {
+    const q = quote();
+    roll($('#siteNum'), q.site);
+    $('#siteHow').textContent = q.lines.map(l => `${lineText(l)} ${fmt(l.v)}`).join(' · ');
+    const per = q.yearly ? t('yr') : t('mo');
+    const rows = [[t('r.site'), 'CHF ' + fmt(q.site)]];
+    if (q.disc) rows.push([t('r.disc'), '−CHF ' + fmt(q.disc), 'good']);
+    if (q.plan) {
+      rows.push([t('plan.' + q.plan.id), 'CHF ' + fmt(q.perPeriod) + per]);
+      if (q.yearly) rows.push([t('r.equiv'), 'CHF ' + fmt(q.perPeriod / 12, true) + t('mo'), 'dim']);
+    } else rows.push([t('r.noplan'), '—', 'dim']);
+    $('#receiptRows').innerHTML = rows.map(r => `<div${r[2] ? ` class="${r[2]}"` : ''}><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join('');
+    $('#totalLabel').textContent = q.plan ? t('l3.year1') : t('l3.oneoff');
+    roll($('#yearNum'), q.plan ? q.year1 : q.oneTime);
+    // WhatsApp message with the whole selection
+    const style = ($('input[name="style"]:checked') || {}).value || '';
+    const secs = $$('input[name="sec"]:checked').map(i => t('b.' + i.value) || i.value);
+    const msg = [t('wa.hi'), '',
+      `${t('wa.design')}: ${$('#custom').checked ? t('b.custom') : style.charAt(0).toUpperCase() + style.slice(1)}`,
+      `${t('wa.secs')}: ${secs.join(', ') || '—'}`,
+      `${t('r.site')}: CHF ${fmt(q.oneTime)}${q.disc ? ` (${t('r.disc').toLowerCase()} −${fmt(q.disc)})` : ''}`,
+      `${t('wa.plan')}: ${q.plan ? `${t('plan.' + q.plan.id)}, CHF ${fmt(q.perPeriod)}${per}` : t('r.noplan')}`
+    ].join('\n');
+    $('#sendQuote').href = 'https://wa.me/41784228381?text=' + encodeURIComponent(msg);
+  }
+
+  function renderAll() { renderPlans(); renderPrice(); }
+
+  $('#care').addEventListener('submit', e => e.preventDefault());
+  $('#care').addEventListener('change', e => {
+    if (e.target.name === 'plan') sel.plan = e.target.value;
+    if (e.target.name === 'billing') sel.billing = e.target.value;
+    renderPrice();
+  });
+
+  fetch('/priceCalc/pricing.json', { cache: 'no-cache' })
+    .then(r => (r.ok ? r.json() : Promise.reject()))
+    .then(cfg => {
+      if (!cfg || !Array.isArray(cfg.tiers) || !cfg.tiers.length) return;
+      P = cfg;
+      const plans = (cfg.recurring && cfg.recurring.plans) || [];
+      if (!byId(plans, sel.plan)) { const def = plans.find(p => p.default) || plans[0]; sel.plan = def ? def.id : 'none'; }
+      renderAll();
+    })
+    .catch(() => {});
 
   /* ---------------- configurator (level 02) ---------------- */
   const mini = $('#mini'), cfg = $('#config'), builtEl = $('#built'), screenEl = $('#screen');
@@ -157,7 +274,9 @@
   cfg.addEventListener('submit', e => e.preventDefault());
   cfg.addEventListener('change', e => {
     const inp = e.target;
+    renderPrice();
     if (inp.name === 'style') { mini.dataset.style = inp.value; return; }
+    if (inp.name === 'custom') return;
     const els = $$(`[data-sec="${inp.value}"]`, mini);
     countOn();
     els.forEach(el => {

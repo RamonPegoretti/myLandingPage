@@ -156,6 +156,7 @@
           <label><input type="radio" name="style" value="crafted"><span>Crafted</span></label>
           <label><input type="radio" name="style" value="poster"><span>Poster</span></label>
         </div>
+        <label class="custom"><input type="checkbox" name="custom" id="custom"><span><b data-i18n="b.custom">Design su misura</b><small data-i18n="b.customp">Niente modello: lo disegno da zero per il tuo marchio.</small></span></label>
       </fieldset>
       <fieldset>
         <legend class="mono dim" data-i18n="l2.sections">02 · Sezioni</legend>
@@ -168,6 +169,11 @@
           <label><input type="checkbox" name="sec" value="lang"><span data-i18n="b.lang">Seconda lingua</span></label>
         </div>
       </fieldset>
+      <div class="quote" aria-live="polite">
+        <p class="mono dim" data-i18n="l2.price">03 · Prezzo del sito</p>
+        <p class="quote__num"><span class="cur">CHF</span><span id="siteNum">1'150</span></p>
+        <p class="quote__how" id="siteHow">Base 1'000 · 1 pagina in più 150</p>
+      </div>
     </form>
 
     <div class="screen" id="screen">
@@ -203,24 +209,29 @@
   <p class="build__meter mono"><span id="built">2</span>/6 <span data-i18n="l2.blocks">sezioni</span> · <span data-i18n="l2.speed">questa pagina si è caricata in</span> <span id="ms">–</span> ms</p>
 </section>
 
-<!-- ============ LEVEL 03 · PREZZI ============ -->
+<!-- ============ LEVEL 03 · CURA (piano mensile + preventivo) ============ -->
 <section class="level level--price" id="prezzi" data-level="3">
   <div class="level__tag mono"><span data-i18n="lv">LIVELLO</span> 03<span class="dim">/05</span></div>
-  <h2 class="level__title" data-i18n="l3.title">Il prezzo, senza giri.</h2>
+  <h2 class="level__title" data-i18n="l3.title">Mi prendo cura del tuo sito.</h2>
+  <p class="level__lead" data-i18n="l3.lead">Dopo il lancio non sparisco. Scegli un power-up mensile, oppure nessuno: il sito resta comunque tuo.</p>
 
-  <div class="price">
-    <p class="price__from mono" data-i18n="l3.from">IL TUO SITO DA</p>
-    <p class="price__num"><span class="cur">CHF</span><span id="priceNum" data-to="1000">1'000</span></p>
-    <p class="price__note" data-i18n="l3.note">Prezzo chiaro prima di iniziare. Niente sorprese, niente abbonamenti nascosti.</p>
-  </div>
+  <div class="care">
+    <form class="plans" id="care">
+      <div class="billing" role="radiogroup" aria-label="Fatturazione">
+        <label><input type="radio" name="billing" value="monthly" checked><span data-i18n="l3.monthly">Mensile</span></label>
+        <label><input type="radio" name="billing" value="yearly"><span><span data-i18n="l3.yearly">Annuale</span> <em data-i18n="l3.free">3 mesi gratis</em></span></label>
+      </div>
+      <div class="plans__list" id="planList" data-wire="plans.forEach(render)" style="--d:0"></div>
+    </form>
 
-  <div class="powerups" data-wire="plans.forEach(render)" style="--d:0">
-    <p class="mono dim" data-i18n="l3.pu">POWER-UP MENSILI · FACOLTATIVI</p>
-    <ul>
-      <li><span class="mono">+HP</span><strong>Hosting</strong><em>CHF 25<small data-i18n="mo">/mese</small></em></li>
-      <li><span class="mono">+DEF</span><strong data-i18n="l3.maint">Manutenzione</strong><em>CHF 69<small data-i18n="mo">/mese</small></em></li>
-      <li><span class="mono">+MAX</span><strong>Premium</strong><em>CHF 129<small data-i18n="mo">/mese</small></em></li>
-    </ul>
+    <aside class="receipt" aria-live="polite">
+      <p class="mono dim" data-i18n="l3.receipt">IL TUO PREVENTIVO</p>
+      <dl class="receipt__rows" id="receiptRows"></dl>
+      <p class="receipt__label mono dim" id="totalLabel" data-i18n="l3.year1">TOTALE PRIMO ANNO</p>
+      <p class="receipt__total"><span class="cur">CHF</span><span id="yearNum">1'150</span></p>
+      <a class="btn-quote" id="sendQuote" href="https://wa.me/41784228381" target="_blank" rel="noopener" data-i18n="l3.send">Mandami questo preventivo</a>
+      <p class="receipt__note" data-i18n="l3.note">Stima indicativa: il prezzo finale lo fissiamo insieme prima di iniziare. Niente costi nascosti.</p>
+    </aside>
   </div>
 </section>
 
