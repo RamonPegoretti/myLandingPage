@@ -16,7 +16,15 @@ window.I18N = {
     "plan.maintenance": "Manutenzione", "plan.maintenance.f": "Tutto di Hosting|Aggiornamenti e sicurezza|30 min di modifiche al mese",
     "plan.premium": "Premium", "plan.premium.f": "Tutto di Manutenzione|2 ore di modifiche al mese|Supporto prioritario|Report mensile",
     "wa.hi": "Ciao Ramon, ho composto il mio sito sulla tua pagina:", "wa.design": "Design", "wa.secs": "Sezioni", "wa.plan": "Piano",
-    "site.url": "osteriadellago.ch"
+    "site.url": "osteriadellago.ch",
+    "biz.msg": {
+      "shop": "Ciao Ramon, ho un negozio e mi piacerebbe un sito. Possiamo parlarne?",
+      "beauty": "Ciao Ramon, ho un salone (parrucchiere o estetica) e mi piacerebbe un sito. Possiamo parlarne?",
+      "trade": "Ciao Ramon, ho un'attività artigianale e mi piacerebbe un sito. Possiamo parlarne?",
+      "stay": "Ciao Ramon, ho un hotel o B&B e mi piacerebbe un sito. Possiamo parlarne?",
+      "studio": "Ciao Ramon, ho uno studio professionale e mi piacerebbe un sito. Possiamo parlarne?",
+      "club": "Ciao Ramon, ho un'associazione e mi piacerebbe un sito. Possiamo parlarne?"
+    }
   },
   en: {
     "hud.score": "SCORE",
@@ -45,6 +53,24 @@ window.I18N = {
     "l2.sections": "02 · Sections",
     "l2.blocks": "sections",
     "l2.speed": "this page loaded in",
+    "other.tag": "NOT A RESTAURANT?",
+    "other.title": "The templates are just a starting point.",
+    "other.text": "I build sites for any local business. Pick yours: WhatsApp opens with a message already written.",
+    "biz.shop": "Shop",
+    "biz.beauty": "Hair / beauty salon",
+    "biz.trade": "Tradesperson",
+    "biz.stay": "Hotel / B&B",
+    "biz.studio": "Office / freelancer",
+    "biz.club": "Club / association",
+    "biz.other": "Something else → message me",
+    "biz.msg": {
+      "shop": "Hi Ramon, I have a shop and I'd like a website. Can we talk?",
+      "beauty": "Hi Ramon, I have a hair or beauty salon and I'd like a website. Can we talk?",
+      "trade": "Hi Ramon, I have a trade business and I'd like a website. Can we talk?",
+      "stay": "Hi Ramon, I have a hotel or B&B and I'd like a website. Can we talk?",
+      "studio": "Hi Ramon, I have a professional office and I'd like a website. Can we talk?",
+      "club": "Hi Ramon, I have a club or association and I'd like a website. Can we talk?"
+    },
     "b.hours": "Hours · open now", "b.menu": "Menu with prices", "b.gallery": "Photo gallery", "b.map": "Map and address", "b.book": "Booking", "b.lang": "Second language",
     "m.menu": "Menu", "m.hours": "Hours", "m.contact": "Contact", "m.book": "Book",
     "m.kick": "Restaurant · Caslano",

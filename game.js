@@ -26,6 +26,8 @@
     btn.setAttribute('aria-label', t('lang.aria'));
     btn.children[0].classList.toggle('lang__on', lang === 'it');
     btn.children[1].classList.toggle('lang__on', lang === 'en');
+    // prefilled WhatsApp text follows the language
+    $$('[data-biz]').forEach(a => { a.href = 'https://wa.me/41784228381?text=' + encodeURIComponent(t('biz.msg')[a.dataset.biz]); });
     renderAll();
   }
   $('#lang').addEventListener('click', () => {
