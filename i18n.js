@@ -27,7 +27,7 @@ window.I18N = {
     "start.hint": "move the mouse · touch the screen",
     "start.meta": "MALCANTONE → LUGANO",
     "lv": "LEVEL",
-    "l1.title": "Select your player",
+    "l1.title": "About me",
     "l1.photo": "PHOTO COMING · 4:5",
     "l1.class": "Class",
     "l1.classv": "Software developer",
