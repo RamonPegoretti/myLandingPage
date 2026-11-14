@@ -22,3 +22,6 @@ Mapping from the configurator: home page included; menu, gallery and booking eac
 Run locally: open `index.html`, or `python3 -m http.server` in this folder.
 Deploy: GitHub Pages (Settings → Pages → Deploy from branch → `main` / root).
 Add `?gaps` to the URL to highlight placeholders.
+
+## Updating CSS/JS
+GitHub Pages lets browsers cache files for 10 minutes. After changing `style.css` or a `.js` file, bump the `?v=` number on its tag in `index.html` so visitors get the new file straight away.
