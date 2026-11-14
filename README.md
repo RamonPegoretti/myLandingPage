@@ -8,6 +8,7 @@ Plain HTML/CSS/JS, no build step, no libraries.
 - `i18n.js`: English translations + strings used by the JS
 - `style.css`: design tokens at the top (`:root`), then sections
 - `game.js`: language switch, levels/score, builder, particle field
+- `fonts/`, `fonts.css`, `fonts-templates.css`: self-hosted fonts (latin subset, SIL Open Font License); no requests to Google
 - `GAPS.md`: placeholders still to fill
 
 Run locally: open `index.html`, or `python3 -m http.server` in this folder.
