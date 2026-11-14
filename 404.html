@@ -2,6 +2,8 @@
 <html lang="it" data-fx-start="404">
 <head>
 <meta charset="utf-8">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- 404 can be served at any depth: resolve every path from the site root.
      If the site moves to its own domain, change this to "/". -->
@@ -33,10 +35,7 @@
   html:not(.js) [lang-block="it"]{display:revert}
   @media (max-width:600px){body{padding-bottom:0}}
 </style>
-<script>
-  document.documentElement.classList.add('js');
-  try { if (localStorage.getItem('lang') === 'en') document.documentElement.lang = 'en'; } catch (e) {}
-</script>
+<script src="head.js"></script>
 </head>
 <body>
 <canvas class="field" id="field" aria-hidden="true"></canvas>
@@ -74,26 +73,11 @@
     <a class="lost__home" href="./#contatto">
       <span lang-block="it">oppure scrivimi</span><span lang-block="en" lang="en">or message me</span>
     </a>
+    <a class="lost__home" href="privacy.html">Privacy</a>
   </div>
 </main>
 
 <script src="fx.js"></script>
-<script>
-  (() => {
-    // arcade-style countdown that ends in GAME OVER (no forced redirect)
-    const box = document.getElementById('continue'), n = document.getElementById('count');
-    const label = box.querySelector('.cnt-label');
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { box.hidden = true; return; }
-    let c = 9;
-    const id = setInterval(() => {
-      c -= 1;
-      if (c >= 0) { n.textContent = c; return; }
-      clearInterval(id);
-      box.classList.add('over');
-      label.textContent = 'GAME OVER';
-      window.FX && FX.burst(innerWidth / 2, innerHeight * 0.4, 90);
-    }, 1000);
-  })();
-</script>
+<script src="page-404.js"></script>
 </body>
 </html>

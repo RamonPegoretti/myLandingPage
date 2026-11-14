@@ -154,6 +154,7 @@
     $$('[data-sec]', mini).forEach(el => el.classList.toggle('off', !on.has(el.dataset.sec)));
     countOn();
   }
+  cfg.addEventListener('submit', e => e.preventDefault());
   cfg.addEventListener('change', e => {
     const inp = e.target;
     if (inp.name === 'style') { mini.dataset.style = inp.value; return; }

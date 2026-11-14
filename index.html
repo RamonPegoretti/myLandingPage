@@ -2,6 +2,8 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ramon Pegoretti · Siti web in Ticino</title>
 <meta name="description" content="Sviluppatore web in Ticino. Siti veloci e su misura per attività locali, da CHF 1'000.">
@@ -24,7 +26,7 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="preload" as="style" id="tplFonts" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@125,900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Instrument+Serif:ital@0;1&family=Young+Serif&family=Bricolage+Grotesque:wght@400;700&family=Hanken+Grotesk:wght@400;600&family=Instrument+Sans:wght@400;600&family=Caveat:wght@500&display=swap">
-<script>document.documentElement.classList.add('js')</script>
+<script src="head.js"></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","name":"Ramon Pegoretti · Web","description":"Siti web per attività locali in Ticino","areaServed":"Ticino","email":"ramopego@gmail.com","telephone":"+41784228381","priceRange":"da CHF 1000"}
 </script>
@@ -147,7 +149,7 @@
   <p class="level__lead" data-i18n="l2.lead">Scegli uno stile e le sezioni che ti servono. L'anteprima è fatta con i miei veri modelli.</p>
 
   <div class="builder">
-    <form class="config" id="config" onsubmit="return false">
+    <form class="config" id="config">
       <fieldset>
         <legend class="mono dim" data-i18n="l2.style">01 · Stile</legend>
         <div class="styles">
